@@ -1,16 +1,16 @@
-### MSDS 630 Advanced Machine Learning University of San Francisco
+# MSDS 630 Advanced Machine Learning University of San Francisco
 
 ----
 
-#### 1 Recommender System
+## 1 Recommender System
 
-##### 1.1 Modeling Theory
+### 1.1 Modeling Theory
 
 
 
-##### 1.2 Programming
+### 1.2 Programming
 
-###### 1.2.1 Predictions
+### 1.2.1 Predictions
 
 Suppose we are given the embedding matrices `emb_user` and `emb_movie` from fitting the matrix factorization problem and the model is,
 
@@ -35,7 +35,7 @@ Solution:
 df['prediction'] = np.sum(emb_user[df['userId'].values]*emb_movie[df['moiveId'].values], axis=1)
 ```
 
-###### 1.2.2 Predictions
+### 1.2.2 Predictions
 
 Suppose we are given the embedding matrices `emb_user` , `emb_movie` , `emb_user_bias` , `emb_movie_bias` from fitting the matrix factorization problem and the model is,
 
@@ -60,7 +60,7 @@ Solution:
 df['prediction'] = np.sum(emb_user[df['userId'].values]*emb_movie[df['moiveId'].values], axis=1) + emb_user_bias[df['userId'].values] + emb_movie_bias[df['moiveId'].values]
 ```
 
-###### 1.2.3 Gradients
+### 1.2.3 Gradients
 
 Suppose we are using MSE for gradient descent and we are given the embedding matrices `emb_user` and `emb_movie` from fitting the matrix factorization problem.
 
@@ -84,7 +84,7 @@ grad_user = -2 / N * np.dot((Y.toarray() - Y_hat.toarray()), emb_movie)
 grad_movie = -2 / N * np.dot((Y.toarray() - Y_hat.toarray()), emb_user)
 ```
 
-###### 1.2.4 Gradient Descents
+### 1.2.4 Gradient Descents
 
 Suppose we are using momentum for calculating gradient descents and we are given the embedding matrices `emb_user` and `emb_movie` from fitting the matrix factorization problem. The dataset `df` and its sparse representation `Y` are provided. 
 
@@ -127,7 +127,7 @@ emb_user -= learning_rate * v_user
 emb_movie -= learning_rate * v_movie
 ```
 
-###### 1.2.5 
+### 1.2.5
 
 
 
