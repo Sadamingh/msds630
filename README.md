@@ -822,12 +822,12 @@ Solution:
 ```python
 def metric_accuracy(model, dataload):
 
-		model.eval()
-		accuracies = []
+    model.eval()
+    accuracies = []
     
-		for x, y in dataload:
+    for x, y in dataload:
       
-      	y_hat = model(x)
+        y_hat = model(x)
         accuracy = sklearn.metrics.balanced_accuracy_score(y, y_hat)
         accuracies.append(accuracy)
         
