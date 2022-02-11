@@ -339,11 +339,11 @@ Drawbacks:
 
 * List two features we can use to build a user profile for movie recommendations.
 
-```
-Demographics, interests, search history, current location, item set, etc.
-```
+Answer: Demographics, interests, search history, current location, item set, etc.
 
+* What are the three types of negative sampling?
 
+Answer: User-oriented sampling, item-oriented sampling, uniform random sampling
 
 ### 1.2 Programming
 
