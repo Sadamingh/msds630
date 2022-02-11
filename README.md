@@ -197,7 +197,7 @@ Solution:
 
 <img src="./images/Screen Shot 2022-02-11 at 10.41.59 AM.png" alt="Screen Shot 2022-02-11 at 10.41.59 AM" style="zoom:45%;" />
 
-* Following the last question, what is the utility matrix if we use negative samples?
+* Following the last question, what is the utility matrix if we use negative samples? (Just give one possible answer)
 
 <img src="./images/Screen Shot 2022-02-11 at 10.44.16 AM.png" alt="Screen Shot 2022-02-11 at 10.44.16 AM" style="zoom:45%;" />
 
