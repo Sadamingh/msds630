@@ -100,7 +100,7 @@ K * (m + n)
 
 * Given the gradient descent equations of matrix factorization with L2 regularization using MSE as the loss in algebra expressions.
 
-<img src="./images/Screen Shot 2022-02-11 at 11.27.32 AM.png" alt="Screen Shot 2022-02-11 at 11.27.32 AM" style="zoom:60%;" />
+<img src="/Users/apple/Dropbox/msds630/msds630/images/Screen Shot 2022-02-11 at 12.54.05 PM.png" alt="Screen Shot 2022-02-11 at 12.54.05 PM" style="zoom:40%;" />
 
 * Given the gradient equations of matrix factorization in matrix expressions.
 
@@ -336,6 +336,14 @@ Drawbacks:
 	- difficult to recognize new genres
 	- hard to exploit the qualify of judgements from other users
 ```
+
+* List two features we can use to build a user profile for movie recommendations.
+
+```
+Demographics, interests, search history, current location, item set, etc.
+```
+
+
 
 ### 1.2 Programming
 
