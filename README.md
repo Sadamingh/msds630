@@ -409,7 +409,7 @@ Use the following template for your implementation.
 ```python
 class BiasedMF(nn.Module):
     def __init__(self, num_users, num_items, emb_size=100):
-        super(MF, self).__init__()
+        super(BiasedMF, self).__init__()
         # TODO: Implement this method
 
     def forward(self, u, v):
@@ -421,9 +421,9 @@ model = BiasedMF()
 Solution:
 
 ```python
-class MF(nn.Module):
+class BiasedMF(nn.Module):
     def __init__(self, num_users, num_items, emb_size=100):
-        super(MF, self).__init__()
+        super(BiasedMF, self).__init__()
         
         self.user_emb = nn.Embedding(num_users, emb_size)
         self.item_emb = nn.Embedding(num_items, emb_size)
@@ -442,7 +442,7 @@ class MF(nn.Module):
         b_v = self.item_bias(v).squeeze()
         return (U * V).sum(1) + b_u + b_v
         
-model = MF()
+model = BiasedMF()
 ```
 
 
