@@ -4,7 +4,55 @@
 
 ## 1 Recommender System
 
-### 1.1 Modeling Theory
+### 1.0 Video Problems
+
+Ref: https://www.youtube.com/watch?v=zzTbptEdKhY
+
+* What the video is about?
+
+Answer: How to recommend content to users in YouTube.
+
+* Decribe a little bit about the initial neural network.
+
+Answer: Inputs are embedded videos watched and embedded search tokens with geographic information. There are three ReLU layers with a KNN and a softmax in the end.
+
+* What is the cold start problem?
+
+Answer: If you have a new user or a new video, there will not be much signals or information to train the neural networks.
+
+* What is one solution of the cold start problem?
+
+Answer: The topic of the video would help.
+
+* How they modify the initial model to solve the cold start problem?
+
+Answer: Adding topic vector to the input.
+
+* What's the method they use to generate topic vector?
+
+Answer: Deep CNN, which means to train on the video shots or audio.
+
+* How to maintain a huge list of topics?
+
+Answer: Use a structured knowledge graph.
+
+* What are the components of triples?
+
+Answer: Entity, property, value.
+
+* What is the solution if the names are not exactly match?
+
+Answer: Look at all the hyperlinks inside wikipedia and these always links to many different names.
+
+* How to decide which topic is the central topic of a video?
+
+Answer: Looks at co-occurrence of topics on wikipedia, so some topics get more votes.
+
+* Describe the steps of entity linking using textual metadata.
+
+Answer: mention detection, disambiguation, pruning.
+
+### 1.1 Modeling Theory Problems
 
 * Suppose we are considering a matrix factorization model with `n` users and `m` items, with a embedding size of `K`. Then how many parameters show we have in this model.
 
@@ -22,7 +70,7 @@ K * (m + n)
 
 Where,
 
-<img src="./images/Screen Shot 2022-02-11 at 12.19.58 AM.png" alt="Screen Shot 2022-02-11 at 12.19.58 AM" style="zoom:40%;" />
+<img src="/Users/apple/Dropbox/msds630/msds630/images/Screen Shot 2022-02-11 at 2.23.42 AM.png" alt="Screen Shot 2022-02-11 at 2.23.42 AM" style="zoom:50%;" />
 
 * Given a loss function used for optimizing matrix factorization.
 
@@ -731,18 +779,60 @@ loss.backward()
 optimizer.step()
 ```
 
+### 2.2.9 Dataset & Dataloader
 
+Suppose we are given `x_train` and `y_train` , construct a dataloader `train_dl` with batch size of 1000, and shuffle the data.
 
+Solution:
 
+```python
+class TrainingDataset(data_utils.Dataset):
 
+    def __init__(self, x, y):
+        x = torch.tensor(x).float()
+        y = torch.tensor(y).float().unsqueeze(1)
+        self.x, self.y = x, y
+    
+    def __len__(self):
+        return len(self.y)
+    
+    def __getitem__(self, idx):
+        return self.x[idx], self.y[idx]
+      
+train_ds = TrainingDataset(x_train, y_train)
+train_dl = data_utils.DataLoader(train_ds, batch_size=1000, shuffle=True)
+```
 
+### 2.2.10 Dataloader
 
+Suppose we want to get one batch of data from the dataloader `train_dl`. Please give the function for this task.
 
+Solution:
 
-* DataLoad
-* video
+```python
+x, y = next(iter(train_dl))
+```
 
+### 2.2.11 Dataloader
 
+Write a function that given a model `model` and a dataloader  `train_dl` that computes the balanced accuracy. Assume that you have a binary classification problem and you can use `balanced_accuracy_score` from `sklearn`.
 
+Solution:
 
+```python
+def metric_accuracy(model, dataload):
+
+		model.eval()
+		accuracies = []
+    
+		for x, y in dataload:
+      
+      	y_hat = model(x)
+        accuracy = sklearn.metrics.balanced_accuracy_score(y, y_hat)
+        accuracies.append(accuracy)
+        
+    return np.mean(accuracies)
+
+metric_accuracy(model, train_dl)
+```
 
