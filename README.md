@@ -64,9 +64,19 @@ Answer: gradient descent is a iterative optimization algorithm for finding the m
 K * (m + n)
 ```
 
-* Given the gradient descent equations of matrix factorization in algebra expressions.
+* Given the gradient descent equations of matrix factorization with MSE in algebra expressions.
 
 <img src="./images/Screen Shot 2022-02-11 at 12.16.11 AM.png" alt="Screen Shot 2022-02-11 at 12.16.11 AM" style="zoom:40%;" />
+
+* Given the gradient descent equations of matrix factorization with bias using MSE as the loss in algebra expressions.
+
+<img src="./images/Screen Shot 2022-02-11 at 11.16.24 AM.png" alt="Screen Shot 2022-02-11 at 11.16.24 AM" style="zoom:50%;" />
+
+<img src="./images/Screen Shot 2022-02-11 at 11.16.31 AM.png" alt="Screen Shot 2022-02-11 at 11.16.31 AM" style="zoom:50%;" />
+
+* Given the gradient descent equations of matrix factorization with L2 regularization using MSE as the loss in algebra expressions.
+
+<img src="./images/Screen Shot 2022-02-11 at 11.27.32 AM.png" alt="Screen Shot 2022-02-11 at 11.27.32 AM" style="zoom:60%;" />
 
 * Given the gradient equations of matrix factorization in matrix expressions.
 
