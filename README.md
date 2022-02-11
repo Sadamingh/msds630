@@ -260,6 +260,37 @@ Then,
 sim = 5/8
 ```
 
+* Given the following two users' ratings on items, calculate the cosine similarity between them.
+
+```
+user 1        1 5 3
+user 2        1 2 3
+```
+
+Solution:
+
+```
+cosine sim = (1 + 10 + 9) / (sqrt(1 + 25 + 9) * sqrt(1 + 4 + 9))
+           = 20 / (sqrt(35) * sqrt(14))
+           = 20 / (7 * sqrt(10)) 
+```
+
+* Given the following two users' ratings on items, calculate the pearson similarity between them.
+
+```
+user 1        1 5 3
+user 2        1 2 3
+```
+
+Solution:
+
+```
+avg_u1 = 3
+avg_u2 = 2
+pearson sim = (2 + 0 + 0) / (sqrt(4 + 4 + 0) + sqrt(1 + 0 + 1))
+            = 2 / (3 * sqrt(2))
+```
+
 * What are the steps for content based kNN?
 
 ```
