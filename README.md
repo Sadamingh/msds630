@@ -4,7 +4,9 @@
 
 ## 1 Recommender System
 
-### 1.0 Video Problems
+## 1.0 Video and Paper Problems
+
+### 1.0.1 Video Problems
 
 Ref: https://www.youtube.com/watch?v=zzTbptEdKhY
 
@@ -51,6 +53,28 @@ Answer: Looks at co-occurrence of topics on wikipedia, so some topics get more v
 * Describe the steps of entity linking using textual metadata.
 
 Answer: mention detection, disambiguation, pruning.
+
+### 1.0.2 Paper Problems
+
+Ref: https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45530.pdf
+
+* What are the steps for building this recommendation system?
+
+```
+candidate generate, scoring, reranking
+```
+
+* What are the two models they use in building this recommendation system?
+
+```
+candidate generation model, ranking model
+```
+
+* Why do we need a ranking model?
+
+```
+By using a ranking model, they reduced the number of the recommendations based on candidate generations from hundreds to dozens, which makes it easier for users to browse.
+```
 
 ### 1.1 Modeling Theory Problems
 
