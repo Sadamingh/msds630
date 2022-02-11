@@ -70,7 +70,7 @@ K * (m + n)
 
 Where,
 
-<img src="/Users/apple/Dropbox/msds630/msds630/images/Screen Shot 2022-02-11 at 2.23.42 AM.png" alt="Screen Shot 2022-02-11 at 2.23.42 AM" style="zoom:50%;" />
+<img src="./images/Screen Shot 2022-02-11 at 2.23.42 AM.png" alt="Screen Shot 2022-02-11 at 2.23.42 AM" style="zoom:50%;" />
 
 * Given a loss function used for optimizing matrix factorization.
 
