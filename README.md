@@ -16,9 +16,9 @@ Answer: How to recommend content to users in YouTube.
 
 Answer: Inputs are embedded videos watched and embedded search tokens with geographic information. There are three ReLU layers with a KNN and a softmax in the end.
 
-* What is the cold start problem?
+* What is the cold start problem in this video?
 
-Answer: If you have a new user or a new video, there will not be much signals or information to train the neural networks.
+Answer: If you have a new video, there will not be much signals or information to train the neural networks.
 
 * What is one solution of the cold start problem?
 
@@ -53,6 +53,10 @@ Answer: Looks at co-occurrence of topics on wikipedia, so some topics get more v
 Answer: mention detection, disambiguation, pruning.
 
 ### 1.1 Modeling Theory Problems
+
+* What is gradient descent?
+
+Answer: gradient descent is a iterative optimization algorithm for finding the minimum of a function.
 
 * Suppose we are considering a matrix factorization model with `n` users and `m` items, with a embedding size of `K`. Then how many parameters show we have in this model.
 
@@ -104,6 +108,67 @@ purchases               I
 navgigation history     I            
 ```
 
+* Explain the difference between implicit feedback or explicit feedback?
+
+```
+- Implicit rating: make inference from user's behavior
+- Explicit rating: ask users to rate items
+```
+
+* What are the benefits and drawbacks for implicit feedbacks?
+
+```
+- Benefits:
+	- available and easy to get
+	
+- Drawbacks:
+	- no negative feedback
+	- no preference level
+```
+
+* What are the benefits and drawbacks for explicit ratings?
+
+```
+- Benefits:
+	- balanced pos and neg feedbacks
+	- can have preference level
+	- clear and direct
+	
+- Drawbacks:
+	- biased data
+	- sparse data
+	- difficult to get
+```
+
+* Suppose we want to build a recommendation system based on clicks and the data of clicks are listed as follows,
+
+```
+user      item
+0         1
+0         0
+1         1
+1         4
+2         3
+2         2
+3         3
+```
+
+What is the Utility matrix we can use for this task?
+
+Solution:
+
+<img src="./images/Screen Shot 2022-02-11 at 10.31.09 AM.png" alt="Screen Shot 2022-02-11 at 10.31.09 AM" style="zoom:50%;" />
+
+* Following the last question, what is the utility matrix if we fill missing as negatives?
+
+<img src="./images/Screen Shot 2022-02-11 at 10.41.59 AM.png" alt="Screen Shot 2022-02-11 at 10.41.59 AM" style="zoom:45%;" />
+
+* Following the last question, what is the utility matrix if we use negative samples?
+
+<img src="./images/Screen Shot 2022-02-11 at 10.44.16 AM.png" alt="Screen Shot 2022-02-11 at 10.44.16 AM" style="zoom:45%;" />
+
+
+
 * Embedded user ratings are implicit feedbacks.
 
 ```
@@ -124,6 +189,87 @@ Answer:
 ```
 - User-based KNN filtering: find users the nearnest to Alice, then make predictions based on the average of the ratings on that movie.
 - Item-based KNN filtering: find the ratings of movies similar to that movie and then predict the average ratings based on these movies.
+```
+
+* What is the cold start problem?
+
+Answer: If you have a new user or a new video, there will not be much signals or information to train the neural networks.
+
+* What are the solutions for the user cold start problem?
+
+Answer: recommend popular, require interests information, link to social media.
+
+* How can we recommend based on the content of documents? What are the steps?
+
+Answer: use TF-IDF. The steps are
+
+```
+- Remove stopwords
+- Compute TF-IDF scores
+- Keep works with high score
+- Make a vector of size N to represent the document
+```
+
+* Given the following two users' ratings on items, calculate the Jaccard distance between them.
+
+```
+user 1        4 5   5 1   3 2
+user 2          3 4 3 1 2 1
+```
+
+Solution:
+
+```
+sim = 1/8
+```
+
+* Given the following two users' ratings on items, and treating rating 1 and 2 to 0 and 3, 4, 5 to 1. Then calculate the Jaccard distance between them.
+
+```
+user 1        4 5   5 1   3 2
+user 2          3 4 3 1 2 1
+```
+
+Solution:
+
+```
+user 1        1 1   1 0   1 0
+user 2          1 1 1 0 0 0
+```
+
+If we fill missing with negatives,
+
+```
+user 1        1 1 0 1 0 0 1 0
+user 2        0 1 1 1 0 0 0 0
+```
+
+Then,
+
+```
+sim = 5/8
+```
+
+* What are the steps for content based kNN?
+
+```
+- Compute profile vectors for users and items
+- Find a similarity measure and compute similarity between users and items
+- Recommend to a user items with high similarity by kNN
+```
+
+* What are the benefits and drawbacks for a content based system?
+
+```
+Benefits:
+	- no need data on other users
+	- don't have a cold start problem
+	- can be explained
+	
+Drawbacks:
+	- difficult to construct feature vector
+	- difficult to recognize new genres
+	- hard to exploit the qualify of judgements from other users
 ```
 
 ### 1.2 Programming
