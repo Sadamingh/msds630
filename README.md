@@ -6,9 +6,77 @@
 
 ### 1.1 Modeling Theory
 
+* Suppose we are considering a matrix factorization model with `n` users and `m` items, with a embedding size of `K`. Then how many parameters show we have in this model.
 
+```
+K * (m + n)
+```
 
+* Given the gradient descent equations of matrix factorization in algebra expressions.
 
+<img src="./images/Screen Shot 2022-02-11 at 12.16.11 AM.png" alt="Screen Shot 2022-02-11 at 12.16.11 AM" style="zoom:40%;" />
+
+* Given the gradient equations of matrix factorization in matrix expressions.
+
+<img src="./images/Screen Shot 2022-02-11 at 12.16.36 AM.png" alt="Screen Shot 2022-02-11 at 12.16.36 AM" style="zoom:40%;" />
+
+Where,
+
+<img src="./images/Screen Shot 2022-02-11 at 12.19.58 AM.png" alt="Screen Shot 2022-02-11 at 12.19.58 AM" style="zoom:40%;" />
+
+* Given a loss function used for optimizing matrix factorization.
+
+<img src="./images/Screen Shot 2022-02-11 at 12.16.23 AM.png" alt="Screen Shot 2022-02-11 at 12.16.23 AM" style="zoom:40%;" />
+
+* How would you use a content based recommendation system for online blogs?
+
+Answer: Analyze content of the blogs, then use the similarity between blogs to recommend blogs similar to what a user likes.
+
+* How would you use a collaborative filtering recommendation system for online blogs?
+
+Answer: Use past user behaviours and similarities between users and items simultaneously to provide recommendations.
+
+* Select "explicit feedback" (E) or "implicit feedback" (I) for the following user data.
+
+```
+rating
+clicks
+transactions
+purchases
+navgigation history
+```
+
+Solution:
+
+```
+rating                  E
+clicks                  I
+transactions            I
+purchases               I
+navgigation history     I            
+```
+
+* Embedded user ratings are implicit feedbacks.
+
+```
+False
+```
+
+* What is the difference between model-based filtering and memory-based filtering?
+
+Answer:
+
+```
+- Memory based: Remember the utility matrix and make recommendations based on the KNN algorithm. It tends to be slow. 
+- Model based: Fit a model and make recommendations based on model predictions. It tends to have better performance. This is usually called matrix factorization.
+```
+
+* Suppose we want to predict the rating of user Alice on a movie by memory based collaborative filtering. Then what methods can we use?
+
+```
+- User-based KNN filtering: find users the nearnest to Alice, then make predictions based on the average of the ratings on that movie.
+- Item-based KNN filtering: find the ratings of movies similar to that movie and then predict the average ratings based on these movies.
+```
 
 ### 1.2 Programming
 
@@ -221,7 +289,135 @@ Answer:
 tensor([-0.3333, -3.0000, -1.6667])
 ```
 
+* How to create a tensor of zeros shaped `[2,2,2]`?
 
+```
+torch.zeros(2,2,2)
+```
+
+* How to create a tensor of ones shaped `[2,2,2]`?
+
+```
+torch.ones(2,2,2)
+```
+
+* How to create a tensor of normal distributed random values ranged [0, 1) of shape `[2,2,2]`?
+
+```
+torch.rand(2,2,2)
+```
+
+* How to create a tensor of uniform distributed random integers ranged [3, 10) of shape `[2,2,2]`?
+
+```
+torch.randint(3, 10, (2,2,2))
+```
+
+* What is the shape of the `x` after the following lines?
+
+```
+x = torch.tensor([[1,2,3,4]])
+x = x.squeeze()
+```
+
+Answer:
+
+```
+[4]
+```
+
+* What is the shape of the `x` after the following lines?
+
+```
+x = torch.tensor([[1,2,3,4]])
+x = x.squeeze(1)
+```
+
+Answer:
+
+```
+[1, 4]
+```
+
+* What is the shape of the `x` after the following lines?
+
+```
+x = torch.tensor([[1],[2],[3],[4]])
+x = x.squeeze()
+```
+
+Answer:
+
+```
+[4]
+```
+
+* What is the shape of the `x` after the following lines?
+
+```
+x = torch.tensor([[1,2,3,4]])
+x = x.unsqueeze(1)
+```
+
+Answer:
+
+```
+[1,1,4]
+```
+
+* What is the shape of the `x` after the following lines?
+
+```
+x = torch.tensor([[1],[2],[3],[4]])
+x = x.unsqueeze(1)
+```
+
+Answer:
+
+```
+[4,1,1]
+```
+
+* What is the shape of the `x` after the following lines?
+
+```
+x = torch.tensor([1,2,3,4])
+x = x.unsqueeze(1)
+```
+
+Answer:
+
+```
+[4,1]
+```
+
+* Describe what each of the following lines of code are doing during a training loop.
+
+```
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
+
+Answer:
+
+```
+line 1: zero out the gradients for all the tensors in the model
+line 2: computing the gradients for all tensors based on loss
+line 3: iterate all thee tensors and use the interally stored grad to update their values
+```
+
+* Suppose we are given batch size of 1,000 and the data size is 1,000,000, then calculate how many batches do we have in one epoch.
+
+```
+1000000/1000 = 1000
+```
+
+* Suppose we are given batch size of 1,000 and the data size is 1,000,000. The total number of epoches is 10 per training. Calculate the number of iterations we have in one training.
+
+```
+1000000/1000 * 10 = 10000
+```
 
 
 
@@ -445,10 +641,106 @@ class BiasedMF(nn.Module):
 model = BiasedMF()
 ```
 
+### 2.2.6 Train loop
+
+Write a training loop in PyTorch that can train a linear regression model. The template is given as follows,
+
+```python
+def train_model(model, optimizer, train_dl, epoch=10):
+	  for i in range(epochs):
+    		model.train()
+    		total = 0
+        sum_loss = 0
+        for x, y in train_dl:
+          	batch = y.shape[0]
+          	# TODO: Implement here.
+          
+          	total += batch
+          	sum_loss += batch*(loss.item())
+      	train_loss = sum_loss / total
+        print(train_loss)
+```
+
+Solution:
+
+```python
+y_hat = model(x)
+loss = F.mse_loss(y_hat, y)
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
+
+### 2.2.7 Train loop
+
+Write a training loop in PyTorch that can train a logistic regression model (assume the model is linear and doesn't apply sigmoid in the end). The template is given as follows,
+
+```python
+def train_model(model, optimizer, train_dl, epoch=10):
+	  for i in range(epochs):
+    		model.train()
+    		total = 0
+        sum_loss = 0
+        for x, y in train_dl:
+          	batch = y.shape[0]
+          	# TODO: Implement here.
+          
+          	total += batch
+          	sum_loss += batch*(loss.item())
+      	train_loss = sum_loss / total
+        print(train_loss)
+```
+
+Solution:
+
+```python
+y_hat = model(x)
+loss = F.binary_cross_entropy_with_logit(y_hat, y)
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
+
+### 2.2.8 Train loop
+
+Write a training loop in PyTorch that can train a multiclass classification model. The template is given as follows,
+
+```python
+def train_model(model, optimizer, train_dl, epoch=10):
+	  for i in range(epochs):
+    		model.train()
+    		total = 0
+        sum_loss = 0
+        for x, y in train_dl:
+          	batch = y.shape[0]
+          	# TODO: Implement here.
+          
+          	total += batch
+          	sum_loss += batch*(loss.item())
+      	train_loss = sum_loss / total
+        print(train_loss)
+```
+
+Solution:
+
+```
+y_hat = model(x)
+loss = F.cross_entropy(y_hat, y)
+optimizer.zero_grad()
+loss.backward()
+optimizer.step()
+```
 
 
-* batch
+
+
+
+
+
+
+
 * DataLoad
+* video
 
 
 
