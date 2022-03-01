@@ -1313,7 +1313,7 @@ $$
 
 * Fill in the following blanks.
 
-<img src="/Users/apple/Dropbox/msds630/msds630/images/Screen Shot 2022-02-28 at 2.16.19 PM.png" alt="Screen Shot 2022-02-28 at 2.16.19 PM" style="zoom:33%;" />
+<img src="./images/Screen Shot 2022-02-28 at 2.16.19 PM.png" alt="Screen Shot 2022-02-28 at 2.16.19 PM" style="zoom:33%;" />
 
 Solution:
 
@@ -1735,18 +1735,25 @@ $$
 Answer:
 
 1.
+
 $$
 \bar{y}
 $$
+
 2.
+
 $$
 y_i -f_{m-1}(x_i)
 $$
+
 3.
+
 $$
 f_{m-1}(x) + T_m(x)
 $$
+
 4.
+
 $$
 f_M(x)
 $$
@@ -1758,22 +1765,31 @@ $$
 Solution:
 
 1.
+
 $$
 \text{median}(y_i)
 $$
+
 2.
+
 $$
 \text{sign}(y_i - f_{m-1}(x_i))
 $$
+
 3.
+
 $$
 \text{median}_{x_i \in R_{jm}}(y_i - f_{m-1}(x_i))
 $$
+
 4.
+
 $$
 f_{m-1}(x) + \sum_{j=1}^{Jm}\beta_{jm}\mathbb{1}_{[x_i \in R_{jm}]}
 $$
+
 5.
+
 $$
 f_M(x)
 $$
@@ -1785,45 +1801,61 @@ $$
 Solution:
 
 1.
+
 $$
 \arg\min_\beta \sum_{i=1}^{N}L(y_i, \beta)
 $$
+
 2.
+
 $$
 -\left.\frac{\partial \log {(1 + e^{-yf})}}{\partial f}\right|_{f=f_{m-1}\left(x_i\right),\ y_i}
 $$
+
 3.
+
 $$
 \arg\min_\beta \sum_{x_i\in R_{jm}}L(y_i, f_{m-1}(x_i) + \beta)
 $$
+
 4.
+
 $$
 f_{m-1}(x) + \sum_{j=1}^{Jm}\beta_{jm}\mathbb{1}_{[x_i\in R_{jm}]}
 $$
+
 5.
+
 $$
 f_M(x)
 $$
 
 * Fill in the blank for this gradient boosting with log loss.
 
-<img src="/Users/apple/Dropbox/msds630/msds630/images/Screen Shot 2022-02-28 at 4.05.39 PM.png" alt="Screen Shot 2022-02-28 at 4.05.39 PM" style="zoom:40%;" />
+<img src="./images/Screen Shot 2022-02-28 at 4.05.39 PM.png" alt="Screen Shot 2022-02-28 at 4.05.39 PM" style="zoom:40%;" />
 
 Solution:
 
 1.
+
 $$
 \log \frac{1+\bar{y}}{1-\bar{y}}
 $$
+
 2.
+
 $$
 \frac{y^{(i)}}{\log {(1 + e^{y^{(i)}f_{m-1}(x^{(i)})})}}
 $$
+
 3.
+
 $$
 \frac{\sum_{x^{(i)} \in R_{j}} r_{i}}{\sum_{x^{(i)} \in R_{j}}\left|r_{i}\right|\left(1-\left|r_{i}\right|\right)}
 $$
+
 4.
+
 $$
 f_{m-1}(x) + \sum_{j=1}^{Jm}\beta_{jm}\mathbb{1}_{[x_i\in R_{jm}]}
 $$
