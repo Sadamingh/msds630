@@ -1055,3 +1055,775 @@ def metric_accuracy(model, dataload):
 metric_accuracy(model, train_dl)
 ```
 
+## 3 AdaBoosting
+
+### 3.1Non-Programming Question
+
+* What are the features of a bushy tree?
+
+Answer:
+
+```
+Tends to overfit, high variance, low bias
+```
+
+* What are the features of a shallow tree?
+
+Answer:
+
+```
+Tends to underfit, high bias.
+```
+
+* Suppose we have the following dataset. What is the best split for a minimized misclassification error?  And report this misclassification error. Let's suppose all the points have the same weight.
+
+| X1   | X2   | y    |
+| ---- | ---- | ---- |
+| 0    | 0    | 1    |
+| 0    | 1    | 1    |
+| 1    | 2    | 1    |
+| 1    | 0    | -1   |
+| 2    | 1    | -1   |
+
+Solution:
+
+We can drow a plot as follows. 
+
+<img src="./images/Screen Shot 2022-02-28 at 12.09.31 PM.png" alt="Screen Shot 2022-02-28 at 12.09.31 PM" style="zoom:33%;" />
+
+From this plot, we can know the best split can be $x1 < 1.5$. And the misclassification error is ` 0.2`.
+
+* Continue with the last question, what are the Gini impurity and the cross entropy for the classification after that split?
+
+Answer:
+$$
+Gini = 1/5 * (1-1/5) + 4/5 * (1-4/5) = 0.32
+$$
+
+$$
+Entropy = - (1/5 * log_2(1/5) + 4/5 * log_2(4/5)) = 0.72
+$$
+
+* Suppose we have the following decision tree. Then how many terminal regions do we have finally?
+
+```
+Split 1: x1 > 1.3
+Split 2: x2 <= 0.45
+```
+
+Answer:
+
+```
+4, because we have two splits on different features
+```
+
+* Suppose we have the following decision tree. Then how many terminal regions do we have finally?
+
+```
+Split 1: x1 > 1.3
+Split 2: x1 <= 0.45
+```
+
+Answer:
+
+```
+3, because we have two splits on the same feature
+```
+
+* Suppose we have a decision tree as follows.
+
+$$
+T(x ; \theta)=\sum_{j=1}^{J} \beta_{j} 1_{\left[x \in R_{j}\right]}
+$$
+
+Then how many parameters do we have for this tree? And how many regions do we have as a result?
+
+Answer:
+
+```
+We have 2J parameters (R1 ... RJ and b1 ... bJ).
+We have J regions (R1 ... RJ).
+```
+
+* Give three examples of the weak classifiers.
+
+Answer:
+
+```
+logistic regression, shallow decision tree, decision stumps
+```
+
+* What are the features of the weak classifiers?
+
+Answer:
+
+```
+- fast to fit
+- don't overfit
+- tend to underfit
+- high bias
+- do not have good accuracy
+```
+
+* How to get a strong classifier? (Give three examples)
+
+Answer:
+
+```
+- add more features or add polynomial features
+- use an ensemble model with bagging
+- combine weak classifiers
+```
+
+* What is the prediction in the following example? 
+
+  <img src="./images/Screen Shot 2022-02-28 at 12.41.11 PM.png" alt="Screen Shot 2022-02-28 at 12.41.11 PM" style="zoom:60%;" />
+
+Let's suppose the following information is given,
+$$
+x = (120K, Bad, 50K, Good)
+$$
+And the weights for each tree in the model are,
+$$
+\alpha_1 = 2,\ \alpha_2 = 1.5,\ \alpha_3 = 1.5,\ \alpha_4 = 0.5 
+$$
+Solution:
+
+Let's suppose the labels are $safe = 1$ and $Risky = -1$. Then,
+$$
+T_1(x) = 1\\
+T_2(x) = -1\\
+T_3(x) = -1\\
+T_4(x) = 1
+$$
+So the hard prediction is,
+$$
+f_4(x) = sign(\sum_{m=1}^{4}\alpha_mT_m(x)) = sign(2 - 1.5 - 1.5 + 0.5) = -1
+$$
+So the prediction for this case is the label `Risky`.
+
+* Consider we have the following weighted dataset.
+
+| x1   | X2   | y    | w    |
+| ---- | ---- | ---- | ---- |
+| 0    | 0    | 1    | 1/5  |
+| 1    | 1    | -1   | 3/5  |
+| 2    | 2    | 1    | 2/5  |
+
+Find a stump that minimize the weighted classification error.
+
+Solution: We can draw the following plot.
+
+<img src="./images/Screen Shot 2022-02-28 at 12.52.27 PM.png" alt="Screen Shot 2022-02-28 at 12.52.27 PM" style="zoom:30%;" />
+
+So that the stump with $x1 > 1.5$ will have a minimized misclassified error of 1/6. 
+
+Another possible answer can be $x2 > 1.5$ which has the same misclassified error.
+
+* Consider the following dataset.
+
+| x1   | x2   | y    | w    |
+| ---- | ---- | ---- | ---- |
+| 0    | 0    | -1   | 2/10 |
+| 0    | 1    | -1   | 2/10 |
+| 1    | 1    | -1   | 3/10 |
+| 1    | 3    | 1    | 1/10 |
+| 2    | 1    | 1    | 2/10 |
+
+Compute the weighted classification error of the following classifier. Which points are misclassified?
+$$
+g(x)= \begin{cases}1, & \text { if } x_{2} \geq 0.5 \\ -1, & \text { otherwise }\end{cases}
+$$
+Answer:
+
+Point 2 and 3 are misclassified. The weighted misclassification error is,
+$$
+error = (2+3)/(2+2+3+1+2) = 1/2
+$$
+
+* Continue with the last problem, find a stump that minimizes the weighted misclassification error and report this error.
+
+Solution: We can draw a plot as follows.
+
+<img src="./images/Screen Shot 2022-02-28 at 1.04.05 PM.png" alt="Screen Shot 2022-02-28 at 1.04.05 PM" style="zoom:33%;" />
+
+Then the stump with $x1 > 1.5$ minimizes the error. The error in this case is $1/10$.
+
+* Consider the following dataset and `play tennis` is the label.
+
+| Tempature | Wind | play tennis |
+| --------- | ---- | ----------- |
+| hot       | F    | no          |
+| hot       | T    | no          |
+| hot       | F    | yes         |
+| mild      | F    | yes         |
+| cool      | F    | yes         |
+| cool      | T    | no          |
+
+Run Adaboosting by hand for 2 iterations.
+
+Solution:
+
+| X1   | X2   | Y    | W0   |
+| ---- | ---- | ---- | ---- |
+| 0    | 0    | -1   | 1/6  |
+| 0    | 1    | -1   | 1/6  |
+| 0    | 0    | 1    | 1/6  |
+| 1    | 0    | 1    | 1/6  |
+| 2    | 0    | 1    | 1/6  |
+| 2    | 1    | -1   | 1/6  |
+
+ The first stump should be $x2 < 0.5$ with error of `1/6`. So $\alpha_1 = log(5)$ and the first point is misclassified.
+
+| X1   | X2   | Y    | W0   | T1   | W1   |
+| ---- | ---- | ---- | ---- | ---- | ---- |
+| 0    | 0    | -1   | 1/6  | 1    | 5/6  |
+| 0    | 1    | -1   | 1/6  | -1   | 1/6  |
+| 0    | 0    | 1    | 1/6  | 1    | 1/6  |
+| 1    | 0    | 1    | 1/6  | 1    | 1/6  |
+| 2    | 0    | 1    | 1/6  |      | 1/6  |
+| 2    | 1    | -1   | 1/6  | -1   | 1/6  |
+
+The second stump should be $x1>0.5$ with error of,
+$$
+error = (1+1) / (5+5*1) = 1/5
+$$
+So $\alpha_2 = log(4)$ and the point 3, 6 is misclassified.
+
+| X1   | X2   | Y    | W0   | T1   | W1   | T2   | W2   |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 0    | 0    | -1   | 1/6  | 1    | 5/6  | -1   | 5/6  |
+| 0    | 1    | -1   | 1/6  | -1   | 1/6  | -1   | 1/6  |
+| 0    | 0    | 1    | 1/6  | 1    | 1/6  | -1   | 4/6  |
+| 1    | 0    | 1    | 1/6  | 1    | 1/6  | 1    | 1/6  |
+| 2    | 0    | 1    | 1/6  | 1    | 1/6  | 1    | 1/6  |
+| 2    | 1    | -1   | 1/6  | -1   | 1/6  | 1    | 4/6  |
+
+The final predictions are,
+$$
+\hat{y}_1 = sign(log5 - log 4) = 1\\
+\hat{y}_1 = sign(-log5 - log 4) = -1\\
+\hat{y}_1 = sign(log5 - log 4) = 1\\
+\hat{y}_1 = sign(log5 + log 4) = 1\\
+\hat{y}_1 = sign(log5 + log 4) = 1\\
+\hat{y}_1 = sign(-log5 + log 4) = -1\\
+$$
+
+### 3.2 Pseudo Code for AdaBoosting
+
+* Fill in the following blanks.
+
+<img src="/Users/apple/Dropbox/msds630/msds630/images/Screen Shot 2022-02-28 at 2.16.19 PM.png" alt="Screen Shot 2022-02-28 at 2.16.19 PM" style="zoom:33%;" />
+
+Solution:
+
+1.
+$$
+w_i = \frac{1}{N}
+$$
+2.
+$$
+\frac{\sum_{i=1}^{N}w_i\mathbb{1}[y_i \neq T_m(x_i)]}{\sum_{i=1}^{N}w_i}
+$$
+3.
+$$
+\log \frac{1-err_m}{err_m}
+$$
+4.
+$$
+w_i \cdot e^{\alpha_m\mathbb{1}[y_i \neq T_m(x_i)]}
+$$
+5.
+$$
+F(x) = sign(\sum_{m=1}^{M}\alpha_mT_m(x))
+$$
+
+## 4 Gradient Boosting
+
+### 4.1 Non-Programming Questions
+
+* What's the meaning of forward stepwise additive model?
+
+Answer:
+
+```
+- forward: means we don't go back
+- stepwise: means we take one step for each iteration
+- additive: means we sum up the models to get a prediction
+```
+
+* Loss functions for binary classification are written as a function of margin.
+
+```
+True
+```
+
+* Hinge loss is also called SVM loss.
+
+```
+True
+```
+
+* What is the difference between adaboosting and gradient boosting?
+
+```
+- trees in adaboosting are fitted on the same data changing weights
+- trees in gradient boosting are fitted by pseudo residual which changes every iteration
+```
+
+* Gradient boosting is a generalized Adaboosting.
+
+```
+True
+```
+
+* What is the difference between gradient boosting and random forest?
+
+```
+- random forest uses bagging and grow fully grown decision trees, while gradient boosting use weak learners like shallow trees.
+- the initial bias for random forest is made as low as possible, but gradient boosting reduces the bias by adding more trees.
+```
+
+* What is the difference between gradient boosting and neural network?
+
+```
+- gradient boosting works well on tabular data
+- neural networks are useful when applied to raw sensory data
+```
+
+* Suppose we have the following data.
+
+| Sqfeet | Rent |
+| ------ | ---- |
+| 750    | 1160 |
+| 800    | 1200 |
+| 850    | 1280 |
+| 900    | 1450 |
+| 950    | 2000 |
+
+Compute by hand with gradient boosting for two iterations with MAE loss.
+
+Solution:
+
+The first step is,
+
+| x    | y    | f0   | y-f0 | Pr0  |
+| ---- | ---- | ---- | ---- | ---- |
+| 750  | 1160 | 1280 | -120 | -1   |
+| 800  | 1200 | 1280 | -80  | -1   |
+| 850  | 1280 | 1280 | 0    | 0    |
+| 900  | 1450 | 1280 | 170  | 1    |
+| 950  | 2000 | 1280 | 720  | 1    |
+
+To fit a tree based on pseudo residual 0, we have to split at $x = 825$. Then we get the median as our prediction for the pseudo residual, and construct $f1$.
+
+| x    | y    | f0   | y-f0 | Pr0  | T1   | f1 = f0 + T1 |
+| ---- | ---- | ---- | ---- | ---- | ---- | ------------ |
+| 750  | 1160 | 1280 | -120 | -1   | -100 | 1180         |
+| 800  | 1200 | 1280 | -80  | -1   | -100 | 1180         |
+| 850  | 1280 | 1280 | 0    | 0    | 170  | 1450         |
+| 900  | 1450 | 1280 | 170  | 1    | 170  | 1450         |
+| 950  | 2000 | 1280 | 720  | 1    | 170  | 1450         |
+
+Continue this process, 
+
+| x    | y    | f0   | y-f0 | Pr0  | T1   | f1   | y-f1 | Pr1  |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 750  | 1160 | 1280 | -120 | -1   | -100 | 1180 | -20  | -1   |
+| 800  | 1200 | 1280 | -80  | -1   | -100 | 1180 | 20   | 1    |
+| 850  | 1280 | 1280 | 0    | 0    | 170  | 1450 | -170 | -1   |
+| 900  | 1450 | 1280 | 170  | 1    | 170  | 1450 | 0    | 0    |
+| 950  | 2000 | 1280 | 720  | 1    | 170  | 1450 | 550  | 1    |
+
+To fit a tree, we have to split on $x=775$, and then take the median for $T_2$,
+
+| x    | y    | f0   | y-f0 | Pr0  | T1   | f1   | y-f1 | Pr1  | T2   |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 750  | 1160 | 1280 | -120 | -1   | -100 | 1180 | -20  | -1   | -20  |
+| 800  | 1200 | 1280 | -80  | -1   | -100 | 1180 | 20   | 1    | 10   |
+| 850  | 1280 | 1280 | 0    | 0    | 170  | 1450 | -170 | -1   | 10   |
+| 900  | 1450 | 1280 | 170  | 1    | 170  | 1450 | 0    | 0    | 10   |
+| 950  | 2000 | 1280 | 720  | 1    | 170  | 1450 | 550  | 1    | 10   |
+
+Then by $f_2 = f_1 + T_2$ , we have,
+
+| x    | y    | f0   | y-f0 | Pr0  | T1   | f1   | y-f1 | Pr1  | T2   | f2   |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| 750  | 1160 | 1280 | -120 | -1   | -100 | 1180 | -20  | -1   | -20  | 1160 |
+| 800  | 1200 | 1280 | -80  | -1   | -100 | 1180 | 20   | 1    | 10   | 1190 |
+| 850  | 1280 | 1280 | 0    | 0    | 170  | 1450 | -170 | -1   | 10   | 1460 |
+| 900  | 1450 | 1280 | 170  | 1    | 170  | 1450 | 0    | 0    | 10   | 1460 |
+| 950  | 2000 | 1280 | 720  | 1    | 170  | 1450 | 550  | 1    | 10   | 1460 |
+
+And $f_2$ is our prediction after two iterations of gradient boosting with MAE loss.
+
+* Suppose we have the following data.
+
+| Sqfeet | Rent |
+| ------ | ---- |
+| 750    | 1160 |
+| 800    | 1200 |
+| 850    | 1280 |
+| 900    | 1450 |
+| 950    | 2000 |
+
+Compute by hand with gradient boosting for one iteration with MSE loss.
+
+Solution:
+
+Because we have MSE loss, the best initial model is to take the mean value of y.
+
+| x    | y    | f0   | Pr0 = y-f0 |
+| ---- | ---- | ---- | ---------- |
+| 750  | 1160 | 1418 | -258       |
+| 800  | 1200 | 1418 | -218       |
+| 850  | 1280 | 1418 | -138       |
+| 900  | 1450 | 1418 | 32         |
+| 950  | 2000 | 1418 | 582        |
+
+To minimize MSE loss, we have to fit a stump that split at $x = 925$. So, then we take the mean of the pseudo residual in the same split as predictions
+
+| x    | y    | f0   | Pr0  | T1     | f1=f0+T1 |
+| ---- | ---- | ---- | ---- | ------ | -------- |
+| 750  | 1160 | 1418 | -258 | -145.5 | 1272.5   |
+| 800  | 1200 | 1418 | -218 | -145.5 | 1272.5   |
+| 850  | 1280 | 1418 | -138 | -145.5 | 1272.5   |
+| 900  | 1450 | 1418 | 32   | -145.5 | 1272.5   |
+| 950  | 2000 | 1418 | 582  | 582    | 2000     |
+
+And $f_1$ is our prediction after one iteration of gradient boosting with MSE loss.
+
+* Suppose we have the following data.
+
+| Sqfeet | Rent |
+| ------ | ---- |
+| 750    | 1160 |
+| 800    | 1200 |
+| 850    | 1280 |
+| 900    | 1450 |
+| 950    | 2000 |
+
+Compute by hand with gradient boosting for one iteration with MSE loss. Note that we have a shrinkage (learning rate) of 0.8 in this case.
+
+Solution:
+
+This question is similar to the question above and what we have to change is to mutiply that shrinkage when calculating $f_1$. So,
+
+| x    | y    | f0   | Pr0  | T1     | $\nu$T1 | f1=f0+$\nu$T1 |
+| ---- | ---- | ---- | ---- | ------ | ------- | ------------- |
+| 750  | 1160 | 1418 | -258 | -145.5 | -116.4  | 1301.6        |
+| 800  | 1200 | 1418 | -218 | -145.5 | -116.4  | 1301.6        |
+| 850  | 1280 | 1418 | -138 | -145.5 | -116.4  | 1301.6        |
+| 900  | 1450 | 1418 | 32   | -145.5 | -116.4  | 1301.6        |
+| 950  | 2000 | 1418 | 582  | 582    | 465.6   | 1883.6        |
+
+Here, $f_1$ should be our prediction after one iteration of gradient boosting with MSE loss and shrinkage of 0.8.
+
+* Suppose we have a learning rate for gradient boosting as $\eta$ and we find an optimized iteration number $M$. Then if we want to devide the learning rate by 2 for finding the best learning rate, how should we change $M$?
+
+Answer: 
+
+```
+Increase M to 2M
+```
+
+* Suppose we have the loss function for gradient boosting as,
+
+$$
+L(y, f(x)) = \log (1+e^{-yf(x)})
+$$
+
+Then calculate the best initial constant for its initial model.
+
+Answer:
+
+So the best constant $\alpha$ should be found by,
+$$
+\alpha = \arg\min_{\alpha} \sum_{i=1}^{N}\log (1+e^{-y^{(i)}\alpha})
+$$
+ Then,
+$$
+\frac{d\sum_{i=1}^{N}\log (1+e^{-y^{(i)}\alpha})}{d\alpha} = -\sum_{i=1}^{N} \frac{1}{1+e^{-y^{(i)} \alpha}} y^{(i)} e^{-y^{(i)} \alpha}=0
+$$
+So,
+$$
+\sum_{i=1}^{N} \frac{y^{(i)}}{1+e^{y^{(i)} \alpha}}=0
+$$
+Because $y^{(i)} \in \{1, -1\}$, and we can define $N^+$ as the number of $y^{(i)}= 1$ and $N^-$ as the number of $y^{(i)}= -1$. So we have, 
+$$
+N = N^+ + N^-
+$$
+Therefore,
+$$
+\sum_{i=1}^{N} \frac{y^{(i)}}{1+e^{y^{(i)} \alpha}} =  \frac{N^+}{1+e^{ \alpha}} - \frac{N^-}{1+e^{ -\alpha}}=0
+$$
+So,
+$$
+\frac{N^+}{1+e^{ \alpha}} = \frac{N^-}{1+e^{ -\alpha}}
+$$
+Then,
+$$
+\frac{N^+}{1+e^{ \alpha}} = \frac{N^-e^{ \alpha}}{1+e^{ \alpha}}
+$$
+So,
+$$
+N^+ = N^-e^{ \alpha}
+$$
+And,
+$$
+\alpha = \log \frac{N^+}{N^-}
+$$
+Note that we have,
+$$
+\frac{1+\bar{y}}{1-\bar{y}}=\frac{1+\frac{N^{+}-N^{-}}{N}}{1-\frac{N^{+}-N^{-}}{N}}=\frac{N+N^{+}-N^{-}}{N-N^{+}+N^{-}} =\frac{N^+}{N^-}
+$$
+So $\alpha$ is also,
+$$
+\alpha = \log \frac{1+\bar{y}}{1-\bar{y}}
+$$
+
+* Calculate the pseudo residual for MSE loss.
+
+Solution:
+
+For MSE, the pseudo residual is quite simple with,
+$$
+MSE = (y-f)^2
+$$
+Then,
+$$
+r_{im} = -\left.\frac{\partial (y-f)^2}{\partial f}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}} = -2(y^{(i)}-f_{m-1}(x^{(i)}))
+$$
+
+* Calculate the pseudo residual for MAE loss.
+
+Solution:
+
+For MAE, the loss function is,
+$$
+MAE = |y - f|
+$$
+Then,
+$$
+r_{im} = -\left.\frac{\partial |y - f|}{\partial f}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}}
+$$
+This is to say we have,
+$$
+r_{im} =  \begin{cases} -\left.\frac{\partial (y - f)}{\partial f}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}} ,  & y-f\geq0 \\
+                             -\left.\frac{\partial (f-y)}{\partial f}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}}, & y-f<0  \end{cases}
+$$
+Then,
+$$
+r_{im} =  \begin{cases} 1  ,  & y-f\geq0 \\
+                        -1 , & y-f<0  \end{cases}
+$$
+So that we can conclude that, for MAE, the pseudo result can be written as,
+$$
+r_{im} = sign(y^{(i)}-f_{m-1}(x^{(i)}))
+$$
+
+* Calculate the pseudo residual for the following loss function,
+
+$$
+L(y, f)=e^{-yf}
+$$
+
+Solution:
+
+For the definition of pseudo residual,
+$$
+r_{im} = -\left.\frac{\partial e^{-yf}}{\partial f}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}} = y^{(i)} \cdot e^{-y^{(i)}f_{m-1}\left(x^{(i)}\right)}
+$$
+
+* Calculate the pseudo residual for the following loss function,
+
+$$
+L(y, f)= \max{(0, 1-yf)}
+$$
+
+Solution:
+
+The loss function can also be written as,
+$$
+L(y, f)= \begin{cases}
+					0, & yf \geq 1\\
+					1-yf, & yf < 1
+					\end{cases}
+$$
+Then the gradient of $L$ to $f$ is,
+$$
+r_{im} = \begin{cases}
+					0, & yf \geq 1\\
+					-\left.\frac{\partial (1-yf)}{\partial f}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}}, & yf < 1
+					\end{cases}
+$$
+So we have,
+$$
+r_{im} = \begin{cases}
+					0, & yf \geq 1\\
+					y^{(i)}, & yf < 1
+					\end{cases}
+$$
+
+* Calculate the pseudo residual for the following loss function,
+
+$$
+L(y, f)=\log {(1 + e^{-yf})}
+$$
+
+Solution:
+
+Then,
+$$
+r_{im} = -\left.\frac{\partial \log {(1 + e^{-yf})}}{\partial f}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}}
+$$
+This is also,
+$$
+r_{im} = -\left.\frac{-y \cdot e^{-yf}}{\log {(1 + e^{-yf})}}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}}
+$$
+So,
+$$
+r_{im} = -\left.\frac{-y}{\log {(1 + e^{yf})}}\right|_{f=f_{m-1}\left(x^{(i)}\right),\ y^{(i)}} = \frac{y^{(i)}}{\log {(1 + e^{y^{(i)}f_{m-1}(x^{(i)})})}}
+$$
+
+* Calculate the best constant per region for logloss.
+
+Solution:
+
+After getting the pseudo residual and fitting the model , then, the next step is to find the optimal constant per region. For logloss, that is,
+$$
+\begin{aligned}
+\beta_{j} &=\arg \min _{\beta} \sum_{x^{(i)} \in R_{j}} L\left(y^{(i)}, f_{m-1}\left(x^{(i)}\right)+\beta\right) \\
+&=\arg \min _{\beta} \sum_{x^{(i)} \in R_{j}} \log \left(1+e^{-y^{(i)}\left[f_{m-1}\left(x^{(i)}\right)+\beta\right]}\right)
+\end{aligned}
+$$
+Then the derivative is,
+$$
+G(\beta) = \frac {\partial \sum_{x^{(i)} \in R_{j}} \log \left(1+e^{-y^{(i)}\left[f_{m-1}\left(x^{(i)}\right)+\beta\right]}\right)}{\partial \beta} = -\sum_{x^{(i)} \in R_{j}} \frac{y^{(i)}}{1+e^{y^{(i)}\left[f_{m-1}\left(x^{(i)}\right)+\beta\right]}}
+$$
+Because $G(\beta)=0$ doesn't have a closed form solution, we will use the following rule for estimating $\beta$
+$$
+\beta = -\frac{G(0)}{G'(0)}
+$$
+So, firstly, $G'(\beta)$ is ,
+$$
+G^{\prime}(\beta)=\sum_{x^{(i)} \in R_{j}} \frac{\left(y^{(i)}\right)^{2} e^{y^{(i)}\left[f_{m-1}\left(x^{(i)}\right)+\beta\right]}}{(1+e^{\left.y^{(i)}\left[f_{m-1}(x^{(i)}\right)+\beta\right]})^{2}}
+$$
+Note that,
+$$
+-G(0)=\sum_{x^{(i)} \in R_{j}} \frac{y^{(i)}}{1+e^{y^{(i)}\left[f_{m-1}\left(x^{(i)}\right)\right]}}=\sum_{x^{(i)} \in R_{j}} r_{i}
+$$
+And,
+$$
+\left|r_{i}\right|=\frac{1}{1+e^{y^{(i)} \cdot f_{m-1}\left(x^{(i)}\right)}}
+$$
+So,
+$$
+1-\left|r_{i}\right|=\frac{e^{y^{(i)} \cdot f_{m-1}\left(x^{(i)}\right)}}{1+e^{y^{(i)} \cdot f_{m-1}\left(x^{(i)}\right)}}
+$$
+Therefore, 
+$$
+\beta_{j}=\frac{\sum_{x^{(i)} \in R_{j}} r_{i}}{\sum_{x^{(i)} \in R_{j}}\left|r_{i}\right|\left(1-\left|r_{i}\right|\right)}
+$$
+
+### 4.2 Gradient Boosting Pseudo Code
+
+* Fill in the blanks for Gradient boosting with MSE loss.
+
+<img src="./images/Screen Shot 2022-02-28 at 3.41.13 PM.png" alt="Screen Shot 2022-02-28 at 3.41.13 PM" style="zoom:40%;" />
+
+Answer:
+
+1.
+$$
+\bar{y}
+$$
+2.
+$$
+y_i -f_{m-1}(x_i)
+$$
+3.
+$$
+f_{m-1}(x) + T_m(x)
+$$
+4.
+$$
+f_M(x)
+$$
+
+* Fill in the blanks for Gradient boosting with MAE loss.
+
+<img src="./images/Screen Shot 2022-02-28 at 3.46.16 PM.png" alt="Screen Shot 2022-02-28 at 3.46.16 PM" style="zoom:40%;" />
+
+Solution:
+
+1.
+$$
+\text{median}(y_i)
+$$
+2.
+$$
+\text{sign}(y_i - f_{m-1}(x_i))
+$$
+3.
+$$
+\text{median}_{x_i \in R_{jm}}(y_i - f_{m-1}(x_i))
+$$
+4.
+$$
+f_{m-1}(x) + \sum_{j=1}^{Jm}\beta_{jm}\mathbb{1}_{[x_i \in R_{jm}]}
+$$
+5.
+$$
+f_M(x)
+$$
+
+* Fill in the blanks for general Gradient tree boosting.
+
+<img src="./images/Screen Shot 2022-02-28 at 3.54.27 PM.png" alt="Screen Shot 2022-02-28 at 3.54.27 PM" style="zoom:40%;" />
+
+Solution:
+
+1.
+$$
+\arg\min_\beta \sum_{i=1}^{N}L(y_i, \beta)
+$$
+2.
+$$
+-\left.\frac{\partial \log {(1 + e^{-yf})}}{\partial f}\right|_{f=f_{m-1}\left(x_i\right),\ y_i}
+$$
+3.
+$$
+\arg\min_\beta \sum_{x_i\in R_{jm}}L(y_i, f_{m-1}(x_i) + \beta)
+$$
+4.
+$$
+f_{m-1}(x) + \sum_{j=1}^{Jm}\beta_{jm}\mathbb{1}_{[x_i\in R_{jm}]}
+$$
+5.
+$$
+f_M(x)
+$$
+
+* Fill in the blank for this gradient boosting with log loss.
+
+<img src="/Users/apple/Dropbox/msds630/msds630/images/Screen Shot 2022-02-28 at 4.05.39 PM.png" alt="Screen Shot 2022-02-28 at 4.05.39 PM" style="zoom:40%;" />
+
+Solution:
+
+1.
+$$
+\log \frac{1+\bar{y}}{1-\bar{y}}
+$$
+2.
+$$
+\frac{y^{(i)}}{\log {(1 + e^{y^{(i)}f_{m-1}(x^{(i)})})}}
+$$
+3.
+$$
+\frac{\sum_{x^{(i)} \in R_{j}} r_{i}}{\sum_{x^{(i)} \in R_{j}}\left|r_{i}\right|\left(1-\left|r_{i}\right|\right)}
+$$
+4.
+$$
+f_{m-1}(x) + \sum_{j=1}^{Jm}\beta_{jm}\mathbb{1}_{[x_i\in R_{jm}]}
+$$
