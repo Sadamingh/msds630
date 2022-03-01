@@ -2,6 +2,10 @@
 
 ----
 
+In case of any errors on displaying the math formulas, please use this this file for reviewing instead.
+
+[README.pdf](./README.pdf)
+
 ## 1 Recommender System
 
 ## 1.0 Video and Paper Problems
